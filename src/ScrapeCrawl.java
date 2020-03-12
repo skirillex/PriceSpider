@@ -24,31 +24,61 @@ public class ScrapeCrawl {
     private WebDriver browser;
     private String soupContent;
 
-    ScrapeCrawl()
+    ScrapeCrawl( String whichOS)
     {
-        // constructor sets up URL and loads selenium webdriver into variable.
-        this.BASE_URL = "https://www.superdry.com/us/mens/jackets";
+        // constructor loads selenium webdriver into variable.
+        this.BASE_URL = "";
 
-        String exePath = "chromedriver.exe";
-        System.setProperty("webdriver.chrome.driver", exePath);
+        String driverPath = driver(whichOS);
+        System.setProperty("webdriver.chrome.driver", driverPath);
+
         this.browser = new ChromeDriver();
 
         this.soupContent = "";
     }
 
-    public void setUp() {
+    public Map<String, List<String>> scrape(String url){
+        setBASE_URL(url);
+
+        setUp();
+
+        clickCookiesAndLoadMore();
+
+        Map<String, List<String>> passDataToDB = obtainScrapeData();
+
+        quitBrowser();
+
+        return passDataToDB;
+    }
+
+    private String driver(String OS)
+    {
+        if (OS.equals("windows")) {
+            return "chromedriver.exe";
+        }
+        return "chromedriver";
+    }
+
+    public void setBASE_URL(String url)
+    {
+        this.BASE_URL = url;
+    }
+
+    private void setUp() {
         // this method points the driver to the superdry site
         // will need to eventually make this method take a variable to change
         // the page it goes to: jackets, shirts, shorts etc.
-        
+
         sleep(5);
         this.browser.get(this.BASE_URL);
 
     }
 
-    public void clickCookiesAndLoadMore() {
+    private void clickCookiesAndLoadMore() {
         // this method clicks on the accept cookies button and then the "load more"
         // buttons until the entire page is loaded
+
+        sleep(5);
 
         WebElement acceptCookies = this.browser.findElement(By.xpath("//a[@aria-label='allow cookies'][@role='button']"));
         acceptCookies.click();
@@ -77,25 +107,7 @@ public class ScrapeCrawl {
         sleep(5);
     }
 
-    public void quitBrowser()
-    {
-       // closes the browser when done
-        this.browser.quit();
-    }
-
-    public void sleep(int seconds)
-    {
-        // method to call and invoke a pause during the scraping
-        try{
-            TimeUnit.SECONDS.sleep(seconds);
-        }
-        catch (InterruptedException e)
-        {
-            System.err.format("IOException: %s%n", e);
-        }
-    }
-
-    public void scrape_data() {
+    private Map<String, List<String>> obtainScrapeData() {
 
         this.soupContent = this.browser.getPageSource(); // get the fully loaded html from selenium
 
@@ -133,19 +145,11 @@ public class ScrapeCrawl {
             itemsMapData.put(i.attr("id"), namePriceLinkValues);
         }
 
-        Set keyList = itemsMapData.keySet();
-        // placeholder to access all data in map
-        // currently used for debugging
-        for (int i = 0; i < keyList.size(); i++)
-        {
-            System.out.println("id: " + keyList.toArray()[i]);
-            System.out.println("list: " + itemsMapData.get(keyList.toArray()[i]));
-        }
 
-
+        return itemsMapData;
     }
 
-    public String findImg(Element item)
+    private String findImg(Element item)
     {
         if (!item.getElementsByTag("img").attr("src").equals("/public/images/nothing.png"))
         {
@@ -157,7 +161,7 @@ public class ScrapeCrawl {
         }
     }
 
-    public String findPrice(Element item)
+    private String findPrice(Element item)
     {
         // DEBUG
         // System.out.println("find price item element: ");
@@ -216,13 +220,43 @@ public class ScrapeCrawl {
         }
     }
 
+    private void sleep(int seconds)
+    {
+        // method to call and invoke a pause during the scraping
+        try{
+            TimeUnit.SECONDS.sleep(seconds);
+        }
+        catch (InterruptedException e)
+        {
+            System.err.format("IOException: %s%n", e);
+        }
+    }
+
+    private void quitBrowser()
+    {
+        // closes the browser when done
+        this.browser.quit();
+    }
+
+
     public static void main(String[] args) {
-        ScrapeCrawl crawl = new ScrapeCrawl();
+        ScrapeCrawl crawl = new ScrapeCrawl( "windows");
 
-        crawl.setUp();
-        crawl.clickCookiesAndLoadMore();
-        crawl.scrape_data();
+        Map<String, List<String>>itemsMapData = crawl.scrape("https://www.superdry.com/us/mens/swimwear");
 
-        crawl.quitBrowser();
+        StoreScrapeData dbstorage = new StoreScrapeData();
+        dbstorage.store(itemsMapData);
+
+        /*
+        Set keyList = itemsMapData.keySet();
+
+        // currently used for debugging
+        for (int i = 0; i < keyList.size(); i++)
+        {
+            System.out.println("id: " + keyList.toArray()[i]);
+            System.out.println("list: " + itemsMapData.get(keyList.toArray()[i]));
+        }
+
+         */
     }
 }
