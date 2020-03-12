@@ -1,10 +1,10 @@
 # PriceSpider
-WebScraper for Superdry items and prices
+WebScraper to obtain historical data of items and prices
 
 
-project is run in 3 parts:
+One part of an ongoing project to create a site that stores historical data of prices of items.
 
 * Java: Jsoup + Selenium scraper to get prices/items
-* SQL: Relational database to store data (research best way to do it or if using firebase or something is better)
-    * PostgreSQL on AWS 
-* Dart/Flutter: front end website pulls data from database (possibly use java for other website logic functions)
+* SQL: Relational database to store data 
+    * PostgreSQL
+* Dart/Flutter front end
