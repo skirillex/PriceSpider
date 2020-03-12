@@ -8,15 +8,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import org.jsoup.select.*;
-import org.openqa.selenium.json.JsonOutput;
 
-import javax.xml.xpath.XPath;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import java.io.FileWriter;
+
 
 public class ScrapeCrawl {
 
@@ -238,25 +234,4 @@ public class ScrapeCrawl {
         this.browser.quit();
     }
 
-
-    public static void main(String[] args) {
-        ScrapeCrawl crawl = new ScrapeCrawl( "windows");
-
-        Map<String, List<String>>itemsMapData = crawl.scrape("https://www.superdry.com/us/mens/swimwear");
-
-        StoreScrapeData dbstorage = new StoreScrapeData();
-        dbstorage.store(itemsMapData);
-
-        /*
-        Set keyList = itemsMapData.keySet();
-
-        // currently used for debugging
-        for (int i = 0; i < keyList.size(); i++)
-        {
-            System.out.println("id: " + keyList.toArray()[i]);
-            System.out.println("list: " + itemsMapData.get(keyList.toArray()[i]));
-        }
-
-         */
-    }
 }

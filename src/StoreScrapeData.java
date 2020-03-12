@@ -48,7 +48,7 @@ public class StoreScrapeData {
 
     }
 
-    public void establishConnection(){
+    private void establishConnection(){
 
         try {
             Class.forName(this.mySqlDriver);
@@ -66,7 +66,7 @@ public class StoreScrapeData {
 
 
 
-    public void insertItem(String product_id, String name, String url, String img_url, String price)
+    private void insertItem(String product_id, String name, String url, String img_url, String price)
     {
         // method inserts relevant data into items table and price_history table
         String sql = "INSERT IGNORE INTO items (product_id, name, url, img_url, product_id_string, date_created )" + " VALUES (?, ?, ?, ?, ?, now())";
@@ -96,7 +96,7 @@ public class StoreScrapeData {
 
     }
 
-    public int removeLetters(String product_id)
+    private int removeLetters(String product_id)
     {
         // helper method to split off the numbers from the rest of the string in product_id
         String productString = product_id;
@@ -119,39 +119,12 @@ public class StoreScrapeData {
     }
 
 
-    public void closeConnection(){
+    private void closeConnection(){
         try {
             sqlConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
-        }
-    }
-
-    public static void main (String args[])
-    {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://209.122.113.152:3306/ordinary_damp","hosttest", "Virginia12"
-            );
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select  * from items");
-
-            while(rs.next()){
-                System.out.print("product_id: ");
-                System.out.println(rs.getInt("product_id"));
-
-                System.out.println("name: ");
-                System.out.println(rs.getString("name"));
-
-                System.out.println("URL: ");
-                System.out.println(rs.getString("url"));
-                conn.close();
-            }
-        } catch (Exception e) {
-            System.out.println(e);
         }
     }
 
