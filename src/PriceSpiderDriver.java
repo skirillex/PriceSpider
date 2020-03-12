@@ -8,11 +8,13 @@ import java.util.Map;
 
 public class PriceSpiderDriver {
 
+    // TODO get selenium to run headless (especially for linux)
+    
     private List<String> pagesToCrawl;
     String osDriver;
     public PriceSpiderDriver(String windowsOrlinux) throws IOException {
 
-        this.pagesToCrawl = Files.readAllLines(Paths.get("pages.txt"), Charset.defaultCharset());
+        this.pagesToCrawl = Files.readAllLines(Paths.get("./pages.txt"), Charset.defaultCharset());
 
         this.osDriver = windowsOrlinux;
 
@@ -31,9 +33,15 @@ public class PriceSpiderDriver {
     }
 
     public static void main(String[] args) throws IOException {
+
+        System.out.println("Starting SuperDry Web Scraper...");
+        System.out.println(java.time.LocalDateTime.now());
+
         PriceSpiderDriver spider = new PriceSpiderDriver("windows");
 
         spider.crawlAndConsume();
+
+        System.out.println("The spider finished it's crawl and deposited data "+ java.time.LocalDateTime.now());
     }
 
 
