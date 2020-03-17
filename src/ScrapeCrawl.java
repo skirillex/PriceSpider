@@ -42,7 +42,7 @@ public class ScrapeCrawl {
 
         Map<String, List<String>> passDataToDB = obtainScrapeData();
 
-        quitBrowser();
+        //quitBrowser();
 
         return passDataToDB;
     }
@@ -76,9 +76,14 @@ public class ScrapeCrawl {
 
         sleep(5);
 
-        WebElement acceptCookies = this.browser.findElement(By.xpath("//a[@aria-label='allow cookies'][@role='button']"));
-        acceptCookies.click();
-
+        try {
+            WebElement acceptCookies = this.browser.findElement(By.xpath("//a[@aria-label='allow cookies'][@role='button']"));
+            acceptCookies.click();
+        }
+        catch (Exception e)
+        {
+            System.out.println("error while trying to click on cookies");
+        }
         sleep(5);
 
         while (true)
@@ -139,6 +144,9 @@ public class ScrapeCrawl {
 
             // hashmap with the item id as the key and the list as the value
             itemsMapData.put(i.attr("id"), namePriceLinkValues);
+
+            System.out.println(i.attr("id"));
+            System.out.println(namePriceLinkValues);
         }
 
 
@@ -228,7 +236,7 @@ public class ScrapeCrawl {
         }
     }
 
-    private void quitBrowser()
+    public void quitBrowser()
     {
         // closes the browser when done
         this.browser.quit();

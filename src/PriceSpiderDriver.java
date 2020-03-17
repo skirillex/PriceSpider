@@ -9,7 +9,7 @@ import java.util.Map;
 public class PriceSpiderDriver {
 
     // TODO get selenium to run headless (especially for linux)
-    
+
     private List<String> pagesToCrawl;
     String osDriver;
     public PriceSpiderDriver(String windowsOrlinux) throws IOException {
@@ -27,9 +27,12 @@ public class PriceSpiderDriver {
 
         for (String page : pagesToCrawl)
         {
+            System.out.println("Scraping page: " + page);
             Map<String, List<String>> depositToDb = crawler.scrape(page);
             dbStorage.store(depositToDb);
         }
+
+        crawler.quitBrowser();
     }
 
     public static void main(String[] args) throws IOException {
