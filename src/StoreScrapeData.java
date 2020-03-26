@@ -68,6 +68,11 @@ public class StoreScrapeData {
 
     private void insertItem(String product_id, String name, String url, String img_url, String price)
     {
+
+        // TODO to fix possible bug in API insert statement for MariaDB/MySQl of duplicate entries into price_history
+        // have this method check if an entry was inputted for the product_id today, if so, skip that entry
+
+
         // method inserts relevant data into items table and price_history table
         String sql = "INSERT IGNORE INTO items (product_id, name, url, img_url, product_id_string, date_created )" + " VALUES (?, ?, ?, ?, ?, now())";
         String sqlprice = "INSERT INTO price_history (price, date_stored, product_id)" + " VALUES (?, NOW(), ?)";
