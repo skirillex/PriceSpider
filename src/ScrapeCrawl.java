@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import org.jsoup.select.*;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ public class ScrapeCrawl {
     private String BASE_URL;
     private WebDriver browser;
     private String soupContent;
+    private ChromeOptions options;
 
     ScrapeCrawl( String whichOS)
     {
@@ -28,7 +30,9 @@ public class ScrapeCrawl {
         String driverPath = driver(whichOS);
         System.setProperty("webdriver.chrome.driver", driverPath);
 
-        this.browser = new ChromeDriver();
+        this.options = new ChromeOptions();
+        this.options.addArguments("headless");
+        this.browser = new ChromeDriver(this.options);
 
         this.soupContent = "";
     }
@@ -172,7 +176,7 @@ public class ScrapeCrawl {
         // System.out.println(item.attr("data-price"));
         // System.out.println(" ");
 
-        //TODO price error on polos and beanies page. need to check code to fix getting some of the prices
+        //TODO Intermittent price error on polos and beanies page. due to html of superdry changing, but fixes itself.
 
         // if "data-price" value is not found ie: empty string
         if (item.attr("data-price").length() == 0)
