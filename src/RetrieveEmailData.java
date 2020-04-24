@@ -1,4 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.nio.charset.Charset;
@@ -18,10 +21,24 @@ public class RetrieveEmailData {
     private String password;
     private Connection sqlConnection;
 
-    public RetrieveEmailData(){
+    public RetrieveEmailData() throws IOException {
+        /*
         this.myUrl = readFile("myUrl", Charset.defaultCharset());
         this.username = readFile("username", Charset.defaultCharset());
         this.password = readFile("mysql", Charset.defaultCharset());
+
+         */
+        InputStream uin = getClass().getResourceAsStream("/db_cred/myUrl");
+        BufferedReader urlreader = new BufferedReader(new InputStreamReader(uin));
+        this.myUrl = urlreader.readLine();
+
+        InputStream unin = getClass().getResourceAsStream("/db_cred/username");
+        BufferedReader userreader = new BufferedReader(new InputStreamReader(unin));
+        this.username = userreader.readLine();
+
+        InputStream pin = getClass().getResourceAsStream("/db_cred/mysql");
+        BufferedReader passreader = new BufferedReader(new InputStreamReader(pin));
+        this.password = passreader.readLine();
     }
 
     public ResultSet queryAndExtractAlerts() throws SQLException {
@@ -129,7 +146,7 @@ public class RetrieveEmailData {
         statement.executeUpdate();
 
     }
-
+/*
     static String readFile(String path, Charset encoding)
     {
         // method to read strings from files
@@ -143,6 +160,8 @@ public class RetrieveEmailData {
         }
         return new String(encoded, encoding);
     }
+
+ */
 
 
     private void establishConnection(){

@@ -1,6 +1,9 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
+
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.List;
@@ -16,11 +19,25 @@ public class StoreScrapeData {
     private String password;
     private Connection sqlConnection;
 
-    public StoreScrapeData()
-    {
+    public StoreScrapeData() throws IOException {
+        /*
         this.myUrl = readFile("myUrl", Charset.defaultCharset());
         this.username = readFile("username", Charset.defaultCharset());
         this.password = readFile("mysql", Charset.defaultCharset());
+
+         */
+        InputStream uin = getClass().getResourceAsStream("/db_cred/myUrl");
+        BufferedReader urlreader = new BufferedReader(new InputStreamReader(uin));
+        this.myUrl = urlreader.readLine();
+
+        InputStream unin = getClass().getResourceAsStream("/db_cred/username");
+        BufferedReader userreader = new BufferedReader(new InputStreamReader(unin));
+        this.username = userreader.readLine();
+
+        InputStream pin = getClass().getResourceAsStream("/db_cred/mysql");
+        BufferedReader passreader = new BufferedReader(new InputStreamReader(pin));
+        this.password = passreader.readLine();
+
     }
 
     public void store(Map<String, List<String>> dataToDatabase)
@@ -106,6 +123,7 @@ public class StoreScrapeData {
 
         return Integer.parseInt(productStringSplit[1]);
     }
+    /*
     static String readFile(String path, Charset encoding)
     {
         // method to read strings from files
@@ -119,6 +137,8 @@ public class StoreScrapeData {
         }
         return new String(encoded, encoding);
     }
+
+     */
 
 
     private void closeConnection(){

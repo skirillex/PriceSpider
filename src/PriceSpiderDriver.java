@@ -1,7 +1,7 @@
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,14 +15,24 @@ public class PriceSpiderDriver {
     String osDriver;
     public PriceSpiderDriver(String windowsOrlinux) throws IOException {
 
-        this.pagesToCrawl = Files.readAllLines(Paths.get("./pages.txt"), Charset.defaultCharset());
+        //this.pagesToCrawl = Files.readAllLines(Paths.get("./pages.txt"), Charset.defaultCharset());
+        pagesToCrawl = new ArrayList<>();
+
+        InputStream in = getClass().getResourceAsStream("/pages/pages.txt");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+        String line;
+        while ( (line = reader.readLine() ) != null)
+        {
+            pagesToCrawl.add(line);
+        }
+
 
         this.osDriver = windowsOrlinux;
 
     }
 
-    public void crawlAndConsume()
-    {
+    public void crawlAndConsume() throws IOException {
         ScrapeCrawl crawler = new ScrapeCrawl(this.osDriver);
         StoreScrapeData dbStorage = new StoreScrapeData();
 
