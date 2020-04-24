@@ -172,6 +172,8 @@ public class ScrapeCrawl {
         // System.out.println(item.attr("data-price"));
         // System.out.println(" ");
 
+        //TODO price error on polos and beanies page. need to check code to fix getting some of the prices
+
         // if "data-price" value is not found ie: empty string
         if (item.attr("data-price").length() == 0)
         {

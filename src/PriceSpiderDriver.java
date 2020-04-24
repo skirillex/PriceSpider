@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +36,7 @@ public class PriceSpiderDriver {
         crawler.quitBrowser();
     }
 
-    public static void main(String[] args) throws IOException {
-
+    public static void main(String[] args) throws IOException, SQLException {
         System.out.println("Starting SuperDry Web Scraper...");
         System.out.println(java.time.LocalDateTime.now());
 
@@ -45,6 +45,12 @@ public class PriceSpiderDriver {
         spider.crawlAndConsume();
 
         System.out.println("The spider finished it's crawl and deposited data "+ java.time.LocalDateTime.now());
+
+        System.out.println("Starting Email Price Alert Blast...");
+
+        RetrieveEmailData emailBlast = new RetrieveEmailData();
+        emailBlast.compareAndSendEmail();
+
     }
 
 
