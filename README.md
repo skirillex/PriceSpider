@@ -26,6 +26,7 @@ The StoreScrapeData object then stores that data persistently within the MySQL d
 After it finishes that for all of the URL items in the .txt file it then creates a RetrieveEmailData object which checks if any user needs to be emailed a price notification via sendgrid by accessing a table in the database that has emails and item price thresholds. Then deletes that entry once it send the email.
 
 
+#
 
 One part of www.colliecolliecollie.ninja - a site that stores historical data of prices of items and provides tools for users to be notified of price decreases. 
 
