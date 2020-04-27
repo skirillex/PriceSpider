@@ -30,8 +30,8 @@ After it finishes that for all of the URL items in the .txt file it then creates
 
 One part of www.colliecolliecollie.ninja - a site that stores historical data of prices of items and provides tools for users to be notified of price decreases. 
 
-* Java: Jsoup + Selenium scraper to get prices/items
-* Python: Flask + uwsgi server
+* Java: Jsoup + Selenium scraper to get prices/items - PriceSpider - https://github.com/skirillex/PriceSpider 
+* Python: Flask + uwsgi server - collie_api - https://github.com/skirillex/collie_api
 * SQL: Relational database to store data 
     * MySQL
 * Dart/Flutter front end
